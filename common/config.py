@@ -3,7 +3,7 @@ import json
 import os
 from types import SimpleNamespace
 from redis import Redis
-from enum import IntEnum, Enum
+from enum import IntEnum
 import platform
 
 
