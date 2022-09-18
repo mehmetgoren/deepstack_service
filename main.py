@@ -46,6 +46,10 @@ def setup_fr():
 
 
 def main():
+    if len(config.deep_stack.server_url) == 0:
+        logger.error('Config.Deepstack.ServerUrl is empty, the deepstack service is now exiting')
+        return
+
     dckr_mngr = None
     backup = None
     try:
