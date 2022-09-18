@@ -2,6 +2,7 @@ from os import path
 from typing import List, Any
 import docker
 from docker.types import Mount
+from multiprocessing import cpu_count
 
 from common.config import DeepStackDockerType, DeepStackPerformanceMode
 from common.utilities import config, logger
@@ -44,6 +45,13 @@ class DockerManager:
         if self.ds_config.performance_mode != DeepStackPerformanceMode.Medium:
             mode: str = 'High' if self.ds_config.performance_mode == DeepStackPerformanceMode.High else 'Low'
             environments['MODE'] = mode
+
+        cc = int(cpu_count() / 2)
+        if cc > 5:
+            environments['THREADCOUNT'] = cc
+            logger.warning(f'thread count is {cc}')
+        else:
+            logger.warning('thread count is 5')
 
         device_requests = []
         if self.ds_config.docker_type == DeepStackDockerType.GPU:
