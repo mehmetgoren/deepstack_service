@@ -1,6 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import Tuple
-
 from core_od.models.coco_objects import coco80_object
 
 
@@ -30,15 +28,6 @@ class BaseOdObject(ABC):
             return ''
         return self._get_pred_cls_name(self.pred_cls_idx)
 
-    @abstractmethod
-    def _get_pred_color(self, pred_cls_idx: int) -> Tuple[int, int, int]:
-        raise NotImplementedError('BaseOdObject.get_pred_color()')
-
-    def get_pred_color(self) -> Tuple[int, int, int]:
-        if self.pred_cls_idx < 0:
-            return 0, 0, 0
-        return self._get_pred_color(self.pred_cls_idx)
-
 
 class Coco80OdObject(BaseOdObject):
     def __init__(self, pred_score: float, pred_cls_idx: int):
@@ -46,6 +35,3 @@ class Coco80OdObject(BaseOdObject):
 
     def _get_pred_cls_name(self, pred_cls_idx: int) -> str:
         return coco80_object.get_name(pred_cls_idx)
-
-    def _get_pred_color(self, pred_cls_idx: int) -> Tuple[int, int, int]:
-        return coco80_object.get_color(pred_cls_idx)
