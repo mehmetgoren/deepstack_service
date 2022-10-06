@@ -14,10 +14,6 @@ RUN pip3 install deepstack_sdk
 RUN pip3 install psutil
 RUN pip3 install redis
 RUN pip3 install requests
-RUN pip3 install ImageHash
-RUN pip3 install scikit-image
-RUN pip3 install shapely
-RUN pip3 install scikit-image
 
 COPY . .
 

@@ -1,8 +1,6 @@
-import base64
 import os
 import uuid
 from enum import Enum
-from io import BytesIO
 from threading import Thread
 
 from deepstack_sdk import ServerConfig, Face
@@ -12,8 +10,10 @@ from common.utilities import config
 
 class EventChannels(str, Enum):
     read_service = 'read_service'
+    snapshot_in = 'snapshot_in'
+    snapshot_out = 'snapshot_out'
+    od_service = 'od_service'
     fr_train_request = 'fr_train_request'
-    fr_service = 'fr_service'
     fr_train_response = 'fr_train_response'
     frtc = 'frtc'
 
@@ -43,9 +43,3 @@ def start_thread(fn, args):
 
 def generate_id() -> str:
     return str(uuid.uuid4().hex)
-
-
-def pil_to_base64(image):
-    buffered = BytesIO()
-    image.save(buffered, format="JPEG")
-    return base64.b64encode(buffered.getvalue()).decode('utf-8')

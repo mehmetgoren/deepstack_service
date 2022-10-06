@@ -8,24 +8,10 @@ from common.utilities import logger, config
 from core_fr.event_handlers import FrReadServiceEventHandler
 from core_fr.train_event_handler import TrainEventHandler
 from core_fr.utilities import EventChannels, start_thread
-from core_od.deepstack.deepstack_object_detector_model import DeepstackObjectDetectorModel
+from core_od.deepstack_object_detector import DeepstackObjectDetector
 from core_od.event_handlers import OdReadServiceEventHandler
-from core_od.object_detectors.imagehash_once_detector import ImageHashOnceDetector
-from core_od.object_framers import DrawObjectFramer
-from core_od.utilities import register_detect_service, listen_data_changed_event
+from core_od.utilities import register_detect_service
 from docker_manager import DockerManager
-
-
-def setup_od(conn):
-    listen_data_changed_event(conn)
-
-    detector = ImageHashOnceDetector(conn, DeepstackObjectDetectorModel())
-    framer = DrawObjectFramer()
-
-    event_bus = EventBus('read_service')
-    handler = OdReadServiceEventHandler(detector, framer)
-    logger.info('DeepStack service will start soon')
-    event_bus.subscribe_async(handler)
 
 
 def setup_fr():
@@ -45,6 +31,14 @@ def setup_fr():
     sys.exit()
 
 
+def setup_od():
+    detector = DeepstackObjectDetector()
+    event_bus = EventBus(EventChannels.snapshot_in)
+    handler = OdReadServiceEventHandler(detector)
+    logger.info('DeepStack service will start soon')
+    event_bus.subscribe_async(handler)
+
+
 def main():
     if len(config.deep_stack.server_url) == 0:
         logger.error('Config.Deepstack.ServerUrl is empty, the deepstack service is now exiting')
@@ -60,7 +54,7 @@ def main():
         time.sleep(3.)
         backup.restore()
 
-        conn = register_detect_service('deepstack_service', 'deepstack_service-instance', 'The Deepstack Object Detection and Facial Recognition Service®')
+        register_detect_service('deepstack_service', 'deepstack_service-instance', 'The Deepstack Object Detection and Facial Recognition Service®')
         ds_config = config.deep_stack
 
         proc_fr = None
@@ -74,7 +68,7 @@ def main():
 
         if ds_config.od_enabled:
             logger.info('DeepStack Object Detection is enabled')
-            setup_od(conn)
+            setup_od()
         else:
             logger.warning('DeepStack Object Detection is not enabled')
 
