@@ -6,6 +6,7 @@ from threading import Thread
 from deepstack_sdk import ServerConfig, Face
 
 from common.utilities import config
+from utils.dir import get_root_path_for_deepstack
 
 
 class EventChannels(str, Enum):
@@ -27,7 +28,7 @@ def create_face() -> Face:
 
 
 def get_train_dir_path() -> str:
-    return os.path.join(config.general.root_folder_path, 'fr', 'ml', 'train')
+    return os.path.join(get_root_path_for_deepstack(config), 'fr', 'ml', 'train')
 
 
 def create_dir_if_not_exist(path: str):

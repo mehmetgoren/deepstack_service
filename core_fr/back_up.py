@@ -4,12 +4,13 @@ from io import open
 import shutil
 
 from common.utilities import config, logger
+from utils.dir import get_root_path_for_deepstack
 
 
 class BackUp:
     def __init__(self):
         self.server_url = f'{config.deep_stack.server_url}:{config.deep_stack.server_port}'
-        self.full_file_path: str = path.join(config.general.root_folder_path, 'deepstack', 'backupdeepstack.zip')
+        self.full_file_path: str = path.join(get_root_path_for_deepstack(config), 'deepstack', 'backupdeepstack.zip')
 
     def backup(self):
         try:

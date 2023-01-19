@@ -6,6 +6,7 @@ from multiprocessing import cpu_count
 
 from common.config import DeepStackDockerType, DeepStackPerformanceMode
 from common.utilities import config, logger
+from utils.dir import get_root_path_for_deepstack, create_dir_if_not_exists
 
 
 # for more info: https://docker-py.readthedocs.io/en/stable/containers.html
@@ -58,7 +59,9 @@ class DockerManager:
             device_requests.append(docker.types.DeviceRequest(count=-1, capabilities=[['gpu']]))
 
         mounts = list()
-        mounts.append(Mount(source=f'{path.join(config.general.root_folder_path, "deepstack")}', target='/datastore', type='bind'))
+        mount_dir_path = path.join(get_root_path_for_deepstack(config), "deepstack")
+        create_dir_if_not_exists(mount_dir_path)
+        mounts.append(Mount(source=f'{mount_dir_path}', target='/datastore', type='bind'))
 
         container = self.client.containers.run(image=self.__get_image_name(), detach=True, restart_policy={'Name': 'unless-stopped'},
                                                name=self.container_name, ports={'5000': str(self.ds_config.server_port)},
