@@ -8,7 +8,7 @@ from PIL import Image, UnidentifiedImageError
 
 from common.event_bus.event_bus import EventBus
 from common.event_bus.event_handler import EventHandler
-from common.utilities import logger, config
+from common.utilities import logger
 from core_fr.utilities import EventChannels
 from core_od.deepstack_object_detector import DeepstackObjectDetector
 from core_od.models.detections import DetectionResult
@@ -18,7 +18,6 @@ class OdReadServiceEventHandler(EventHandler):
     def __init__(self, detector: DeepstackObjectDetector):
         self.detector = detector
         self.encoding = 'utf-8'
-        self.overlay = config.ai.overlay
         self.publisher = EventBus(EventChannels.snapshot_out)
 
     def handle(self, dic: dict):
