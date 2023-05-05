@@ -1,7 +1,7 @@
 gokalpgoren
     amd64:
-        docker build -t gokalpgoren/deepstack_service:v1.0.0-amd64 .
-        docker run -it --restart unless-stopped --name deepstack_service-instance --net host -e TZ=Europe/Istanbul -v /mnt/sda1:/mnt/sda1 -v /var/run/docker.sock:/var/run/docker.sock gokalpgoren/deepstack_service:v1.0.0-amd64
+        docker build -t gokalpgoren/deepstack_service:v1.0.1-amd64 .
+        docker run -it --restart unless-stopped --name deepstack_service-instance --net host -e TZ=Europe/Istanbul -v /mnt/sda1:/mnt/sda1 -v /var/run/docker.sock:/var/run/docker.sock gokalpgoren/deepstack_service:v1.0.1-amd64
     raspi4:
-        docker build -t gokalpgoren/deepstack_service:v1.0.0-arm64v8 -f Dockerfile.jetson .
-        docker run -it --restart unless-stopped --name deepstack_service-instance --net host -e TZ=Europe/Istanbul -v /mnt/sda1:/mnt/sda1 -v /var/run/docker.sock:/var/run/docker.sock gokalpgoren/deepstack_service:v1.0.0-arm64v8
+        docker build -t gokalpgoren/deepstack_service:v1.0.1-arm64v8 -f Dockerfile.jetson .
+        docker run -it --restart unless-stopped --name deepstack_service-instance --net host -e TZ=Europe/Istanbul -v /mnt/sda1:/mnt/sda1 -v /var/run/docker.sock:/var/run/docker.sock gokalpgoren/deepstack_service:v1.0.1-arm64v8
